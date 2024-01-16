@@ -3,23 +3,24 @@ package com.user.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="accounts")
+@Table(name="users")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false, unique = true, length = 45)
     private String email;
 
-    @Column
+    @Column(nullable = false, length = 64)
     private String password;
     
-    @Column
+    @Column(nullable = false, length = 20)
     private String username;
     
 
