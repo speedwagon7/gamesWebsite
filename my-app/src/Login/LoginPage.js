@@ -3,15 +3,25 @@ import Button from 'react-bootstrap/Button';
 import './LoginPage.css';
 import axios from 'axios';
 import { useState } from 'react';
+import { createUser } from '../Services/UserService';
 
 function LoginPage(){
 
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleClick = async() => {
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+
+        const user = {email, username, password}
+        console.log(user)
+        
+
         try {
-            const response = await axios.post("http://localhost:8080/api/users/register")
+            createUser(user).then((response) => {
+                console.log(response.data)
+            })
         } catch (error) {
             console.error('Error submitting form:', error);
         }
@@ -21,7 +31,7 @@ function LoginPage(){
     return(
         <div>
             <div className='LoginBox'>
-                <Form>
+                <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label> Email Address </Form.Label>
                             <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -29,18 +39,17 @@ function LoginPage(){
                                 We'll never share your email with anyone else.
                             </Form.Text>
                     </Form.Group>
-
+                    <Form.Group className="mb-3" controlId="formBasicUsername">
+                        <Form.Label> Username </Form.Label>
+                            <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label> Password </Form.Label>
                             <Form.Control type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        <Form.Check type="checkbox" label="Check me out" />
-                    </Form.Group>
-
                     <Form.Group className="mb-3">
-                        <Button onClick={handleClick} variant="primary" type="submit">
+                        <Button variant="primary" type="submit">
                             Submit
                         </Button>
                     </Form.Group>
