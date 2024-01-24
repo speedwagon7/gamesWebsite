@@ -2,8 +2,10 @@ package com.user.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.user.dto.UserDto;
 import com.user.exception.ResourceNotFoundException;
 import com.user.model.User;
 import com.user.repository.UserRepository;
@@ -14,18 +16,24 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public User createUser( User newUser){
-        System.out.println("added new user" + newUser.getUsername());
-        User savedUser = this.userRepository.save(newUser);
+    public User createUser( UserDto userDto){
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        //encrypt password with spring security
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        System.out.println("added new user" + userDto.getUsername());
+        User savedUser = this.userRepository.save(user);
         return savedUser;
     }
 
     @Override
-    public User getUserById(Long userId) {
-        User foundUser = userRepository.findById(userId).orElseThrow(() -> 
-                                        new ResourceNotFoundException("Employee does not exist with given id: " + userId));
+    public User findUserByEmail(String email) {
+        User foundUser = userRepository.findByEmail(email).orElseThrow(() -> 
+                                        new ResourceNotFoundException("Employee does not exist with given email: " + email));
         return foundUser;
     }
 
