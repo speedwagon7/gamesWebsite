@@ -2,6 +2,7 @@ package com.user.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.user.dto.UserDto;
 import com.user.model.User;
 import com.user.repository.UserRepository;
 import com.user.service.UserService;
@@ -35,15 +36,15 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable("id") Long userId) {
-        User foundUser = userService.getUserById(userId);
+        User foundUser = userService.findUserById(userId);
         return ResponseEntity.ok(foundUser);
     }
     
     @PostMapping("/register")
-    public ResponseEntity<User> addUser(@RequestBody User newUser) {
+    public ResponseEntity<User> addUser(@RequestBody UserDto newUserDto) {
         try {
             // Validate and save the user
-            User savedUser = userService.createUser(newUser);
+            User savedUser = userService.createUser(newUserDto);
     
             // Return a ResponseEntity with the saved user and HTTP status CREATED
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);

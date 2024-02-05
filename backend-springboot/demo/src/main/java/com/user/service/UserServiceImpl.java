@@ -29,7 +29,12 @@ public class UserServiceImpl implements UserService{
         User savedUser = this.userRepository.save(user);
         return savedUser;
     }
-
+    @Override
+    public User findUserById(Long Id) {
+        User foundUser = userRepository.findById(Id).orElseThrow(() -> 
+                                        new ResourceNotFoundException("Employee does not exist with given Id: " + Id));
+        return foundUser;
+    }
     @Override
     public User findUserByEmail(String email) {
         User foundUser = userRepository.findByEmail(email).orElseThrow(() -> 
