@@ -28,7 +28,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("api/users")
+//added v1!
+@RequestMapping("api/v1/users")
 @AllArgsConstructor
 public class UserController {
 
